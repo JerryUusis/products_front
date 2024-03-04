@@ -3,6 +3,7 @@ import { getAll, getKeys } from "../services/productsService";
 import { ProductType } from "../types/product";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import Loading from "../components/Loading";
 
 import {
   Box,
@@ -18,6 +19,11 @@ import {
 const GetAll = () => {
   const [keys, setKeys] = useState<string[]>([]);
   const [data, setData] = useState<ProductType[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 500);
+  }, []);
 
   useEffect(() => {
     getKeys()
@@ -40,6 +46,9 @@ const GetAll = () => {
   }, []);
 
   return (
+
+    loading ? <Loading /> : 
+
     <Box
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
@@ -72,7 +81,9 @@ const GetAll = () => {
         </Table>
       </TableContainer>
       <Link to={"/"}>
-        <Button variant="contained" sx={{my:"2rem"}}>Home</Button>
+        <Button variant="contained" sx={{ my: "2rem" }}>
+          Home
+        </Button>
       </Link>
     </Box>
   );
