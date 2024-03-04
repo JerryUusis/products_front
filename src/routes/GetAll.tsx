@@ -49,7 +49,7 @@ const GetAll = () => {
     loading ? <Loading /> : 
 
     <Box
-      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "2rem"}}
     >
       <TableContainer component={Paper}>
         <Table>
