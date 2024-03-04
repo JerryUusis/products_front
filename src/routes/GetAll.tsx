@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAll, getKeys } from "../services/productsService";
 import { ProductType } from "../types/product";
-import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
 import HomeButton from "../components/HomeButton";
 
