@@ -28,7 +28,9 @@ const Home = () => {
         <Link to={"/getall"}>
           <Button variant="contained">Get all</Button>
         </Link>
-        <Button variant="contained">Get product</Button>
+        <Link to={"/getproduct"}>
+          <Button variant="contained">Get product</Button>
+        </Link>
         <Button variant="contained">Insert product</Button>
         <Button variant="contained">Update product</Button>
         <Button variant="contained">Delete product</Button>
