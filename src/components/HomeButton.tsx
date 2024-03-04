@@ -5,7 +5,7 @@ const HomeButton = () => {
   return (
     <>
       <Link to={"/"}>
-        <Button variant="contained" sx={{ my: "2rem" }}>
+        <Button variant="contained" >
           Home
         </Button>
       </Link>
