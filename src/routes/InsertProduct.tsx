@@ -1,10 +1,19 @@
 import { useEffect, useState } from "react";
 import { getKeys } from "../services/productsService";
 import { Box, TextField, Typography, Button } from "@mui/material";
+import { insertProduct } from "../services/productsService";
+import HomeButton from "../components/HomeButton";
+import { ProductType } from "../types/product";
 
 const InsertProduct = () => {
   const [keys, setKeys] = useState<string[]>();
-  const [formdata, setFormData] = useState<Record<string, string | number>>({});
+  const [formdata, setFormData] = useState<ProductType>({
+    productId: 0,
+    name: "",
+    model: 0,
+    type: "",
+    price: 0,
+  });
 
   useEffect(() => {
     try {
@@ -17,9 +26,10 @@ const InsertProduct = () => {
   }, []);
 
   const handleChange =
-    (key: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    (key: keyof ProductType) =>
+    (event: React.ChangeEvent<HTMLInputElement>) => {
       const value =
-        key === "productId" || key === "price"
+        key === "price" || key === "productId"
           ? parseFloat(event.target.value)
           : event.target.value;
 
@@ -29,9 +39,17 @@ const InsertProduct = () => {
       }));
     };
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("test", formdata);
+    try {
+      insertProduct({
+        productId: formdata.productId,
+        name: formdata.name,
+        model: formdata.model,
+        type: formdata.type,
+        price: formdata.price,
+      });
+    } catch {}
   };
 
   return (
@@ -51,12 +69,12 @@ const InsertProduct = () => {
       {keys?.map((key) => {
         return (
           <TextField
-            sx={{ textTransform: "capitalize" }}
             key={key}
             label={key}
             type={key === "price" || key === "productId" ? "number" : "text"}
-            value={formdata[key] || ""}
-            onChange={handleChange(key)}
+            sx={{ textTransform: "capitalize" }}
+            value={formdata[key as keyof ProductType]}
+            onChange={handleChange(key as keyof ProductType)}
             inputProps={
               key === "price" || key === "productId" ? { min: 0 } : { min: "" }
             }
@@ -67,6 +85,7 @@ const InsertProduct = () => {
       <Button variant="contained" type="submit">
         Send
       </Button>
+      <HomeButton />
     </Box>
   );
 };
