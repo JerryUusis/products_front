@@ -34,11 +34,15 @@ export const getKeys = async () => {
 }
 
 export const insertProduct = async (newProduct: ProductType) => {
+    const existingProduct = await getOne(newProduct.productId);
     try {
-        axios.post(`${BASE_URL}/rest/products`, newProduct);
+        if (existingProduct.length > 0) { // returns an empty array if an ID doesn't exist
+            throw new Error("Product ID already exists")
+        }
+        await axios.post(`${BASE_URL}/rest/products`, newProduct);
         console.log("Succesfully posted:", newProduct.name)
     }
     catch(error) {
-        console.log(error)
+        throw error;
     }
 }
