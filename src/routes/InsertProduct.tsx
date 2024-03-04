@@ -19,7 +19,7 @@ const InsertProduct = () => {
   const handleChange =
     (key: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
       const value =
-        key === "productId" || key || "price"
+        key === "productId" || key === "price"
           ? parseFloat(event.target.value)
           : event.target.value;
 
@@ -29,8 +29,14 @@ const InsertProduct = () => {
       }));
     };
 
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    console.log("test", formdata);
+  };
+
   return (
     <Box
+      component="form"
       sx={{
         display: "flex",
         flexDirection: "column",
@@ -39,6 +45,7 @@ const InsertProduct = () => {
         gap: "2rem",
         height: "100vh",
       }}
+      onSubmit={handleSubmit}
     >
       <Typography variant="h4">Insert new product</Typography>
       {keys?.map((key) => {
@@ -48,13 +55,18 @@ const InsertProduct = () => {
             key={key}
             label={key}
             type={key === "price" || key === "productId" ? "number" : "text"}
-            required
             value={formdata[key] || ""}
             onChange={handleChange(key)}
+            inputProps={
+              key === "price" || key === "productId" ? { min: 0 } : { min: "" }
+            }
+            required
           />
         );
       })}
-      <Button variant="contained">Send</Button>
+      <Button variant="contained" type="submit">
+        Send
+      </Button>
     </Box>
   );
 };
