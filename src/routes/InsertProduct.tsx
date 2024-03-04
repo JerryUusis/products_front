@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { getKeys } from "../services/productsService";
-import { Box, TextField, Typography, Button } from "@mui/material";
+import { Box, TextField, Typography, Button, Alert, Fade } from "@mui/material";
 import { insertProduct } from "../services/productsService";
 import HomeButton from "../components/HomeButton";
 import { ProductType } from "../types/product";
 
 const InsertProduct = () => {
   const [keys, setKeys] = useState<string[]>();
+  const [success, setSuccess] = useState(false);
+  const [failure, setFailure] = useState(false);
   const [formdata, setFormData] = useState<ProductType>({
     productId: 0,
     name: "",
-    model: 0,
+    model: "",
     type: "",
     price: 0,
   });
@@ -24,6 +26,17 @@ const InsertProduct = () => {
       console.log(error);
     }
   }, []);
+
+  useEffect(() => {
+    if (success || failure) {
+      const timer = setTimeout(() => {
+        setSuccess(false);
+        setFailure(false);
+      }, 4000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [success, failure]);
 
   const handleChange =
     (key: keyof ProductType) =>
@@ -39,17 +52,20 @@ const InsertProduct = () => {
       }));
     };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      insertProduct({
+      await insertProduct({
         productId: formdata.productId,
         name: formdata.name,
         model: formdata.model,
         type: formdata.type,
         price: formdata.price,
       });
-    } catch {}
+      setSuccess(true);
+    } catch (error) {
+      setFailure(true);
+    }
   };
 
   return (
@@ -66,6 +82,28 @@ const InsertProduct = () => {
       onSubmit={handleSubmit}
     >
       <Typography variant="h4">Insert new product</Typography>
+      {success ? (
+        <Fade in={success} timeout={250}>
+          <Alert
+            severity="success"
+            variant="filled"
+            sx={{ position: "absolute" }}
+          >
+            Post succesful!
+          </Alert>
+        </Fade>
+      ) : null}
+      {failure ? (
+        <Fade in={failure} timeout={250}>
+          <Alert
+            severity="error"
+            variant="filled"
+            sx={{ position: "absolute" }}
+          >
+            Product ID already exists
+          </Alert>
+        </Fade>
+      ) : null}
       {keys?.map((key) => {
         return (
           <TextField
