@@ -12,6 +12,16 @@ export const getAll = async () =>  {
     }
 }
 
+export const getOne = async (id: number) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/rest/products/${id}`);
+        return response.data;
+    }
+    catch(error) {
+        console.log(error)
+    }
+}
+
 export const getKeys = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/rest/products/keys`);
