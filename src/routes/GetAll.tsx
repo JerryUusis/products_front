@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { getAll, getKeys } from "../services/productsService";
 import { ProductType } from "../types/product";
-import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
+import HomeButton from "../components/HomeButton";
 
 import {
   Box,
@@ -80,11 +80,7 @@ const GetAll = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Link to={"/"}>
-        <Button variant="contained" sx={{ my: "2rem" }}>
-          Home
-        </Button>
-      </Link>
+       <HomeButton />
     </Box>
   );
 };
