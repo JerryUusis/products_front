@@ -11,7 +11,16 @@ import { ProductType } from "../types/product";
 
 const UpdateProduct = () => {
   const [options, setOptions] = useState<string[]>([]);
-  const [searchId, setSearchId] = useState<number>();
+  const [searchId, setSearchId] = useState<number>(0);
+  const [selectedProduct, setSelectedProduct] = useState<ProductType[]>([
+    {
+      productId: 0,
+      name: "",
+      model: "",
+      type: "",
+      price: 0,
+    },
+  ]);
 
   useEffect(() => {
     try {
@@ -28,13 +37,14 @@ const UpdateProduct = () => {
 
   const handleChange = (
     event: React.SyntheticEvent<Element, Event>,
-    value: number,
-    ) => {
-        setSearchId(Number(value))
+    value: number
+  ) => {
+    setSearchId(Number(value));
   };
 
   const getValuesById = async (productId: number) => {
-    const values = getOne(productId)
+    const values = await getOne(productId);
+    setSelectedProduct(values);
   };
 
   return (
@@ -57,10 +67,22 @@ const UpdateProduct = () => {
       <Button variant="contained" onClick={() => getValuesById(searchId)}>
         Select ID
       </Button>
-      <TextField label={"Name"}></TextField>
-      <TextField label={"Model"}></TextField>
-      <TextField label={"Type"}></TextField>
-      <TextField label={"Price"}></TextField>
+      <TextField
+        label={"Name"}
+        value={selectedProduct ? selectedProduct[0].name : null}
+      />
+      <TextField
+        label={"Model"}
+        value={selectedProduct ? selectedProduct[0].model : null}
+      />
+      <TextField
+        label={"Type"}
+        value={selectedProduct ? selectedProduct[0].type : null}
+      />
+      <TextField
+        label={"Price"}
+        value={selectedProduct ? selectedProduct[0].price : null}
+      />
       <Button variant="contained">Update</Button>
     </Box>
   );
