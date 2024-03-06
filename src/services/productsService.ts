@@ -46,3 +46,12 @@ export const insertProduct = async (newProduct: ProductType) => {
         throw error;
     }
 }
+
+export const updateProduct = async (updatedProduct: ProductType, productId: number) => {
+    try {
+        await axios.put(`${BASE_URL}/rest/products/${productId}`, updatedProduct)
+    }
+    catch(error) {
+        throw error;
+    }
+}
