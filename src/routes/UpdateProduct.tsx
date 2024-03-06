@@ -90,7 +90,7 @@ const UpdateProduct = () => {
     try {
       const values = await getOne(productId);
       setSelectedProduct(values);
-    } catch (error) {
+    } catch (error: any) {
       console.log(error);
     }
   };

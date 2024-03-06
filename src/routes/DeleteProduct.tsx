@@ -7,6 +7,7 @@ import Validation from "../components/Validation";
 const DeleteProduct = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [failure, setFailure] = useState<boolean>(false);
+  const [failureMessage, setFailureMessage] = useState<string>("");
   const [deleteId, setDeleteId] = useState<number>(0);
 
   useEffect(() => {
@@ -28,8 +29,10 @@ const DeleteProduct = () => {
     try {
       await deleteProduct(productId);
       setSuccess(true);
-    } catch(error) {
+    } catch (error: Error) {
+      console.log("error in line 33", error);
       setFailure(true);
+      setFailureMessage(error.message);
     }
   };
 
@@ -56,6 +59,7 @@ const DeleteProduct = () => {
         type="number"
         inputProps={{ min: 0 }}
         onChange={handleChange}
+        required
       ></TextField>
       <Button variant="contained" type="submit">
         Delete
@@ -65,7 +69,7 @@ const DeleteProduct = () => {
         success={success}
         successMessage="Deletion succeeded"
         failure={failure}
-        failureMessage="Deletion unsuccessful"
+        failureMessage={failureMessage?.toString()}
       />
     </Box>
   );
