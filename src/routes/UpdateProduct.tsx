@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -42,9 +42,18 @@ const UpdateProduct = () => {
     setSearchId(Number(value));
   };
 
-  const getValuesById = async (productId: number) => {
+  const getValuesById = async (
+    event: FormEvent<HTMLFormElement>,
+    productId: number
+  ) => {
+    event.preventDefault();
+    try {
     const values = await getOne(productId);
     setSelectedProduct(values);
+    }
+    catch(error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -59,14 +68,27 @@ const UpdateProduct = () => {
       }}
     >
       <Typography variant="h4">Update product</Typography>
-      <Autocomplete
-        onChange={handleChange}
-        options={options}
-        renderInput={(params) => <TextField {...params} label="productId" />}
-      ></Autocomplete>
-      <Button variant="contained" onClick={() => getValuesById(searchId)}>
-        Select ID
-      </Button>
+      <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "2rem",
+        my:"1rem"
+      }}
+        component={"form"}
+        onSubmit={(event) => getValuesById(event, searchId)}
+      >
+        <Autocomplete
+          onChange={handleChange}
+          options={options}
+          renderInput={(params) => <TextField {...params} label="Product Id" required/>}
+        />
+        <Button variant="contained" type="submit">
+          Select ID
+        </Button>
+      </Box>
       <TextField
         label={"Name"}
         value={selectedProduct ? selectedProduct[0].name : null}
