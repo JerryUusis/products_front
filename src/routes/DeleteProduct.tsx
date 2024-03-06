@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-
+import { useState, useEffect, ChangeEvent } from "react";
+import { deleteProduct } from "../services/productsService";
 import { Box, Typography, TextField, Button } from "@mui/material";
 import HomeButton from "../components/HomeButton";
 import Validation from "../components/Validation";
@@ -7,6 +7,7 @@ import Validation from "../components/Validation";
 const DeleteProduct = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [failure, setFailure] = useState<boolean>(false);
+  const [deleteId, setDeleteId] = useState<number>(0);
 
   useEffect(() => {
     if (success || failure) {
@@ -19,6 +20,23 @@ const DeleteProduct = () => {
     }
   }, [success, failure]);
 
+  const handleDelete = async (
+    event: React.FormEvent<HTMLFormElement>,
+    productId: number
+  ) => {
+    event.preventDefault();
+    try {
+      await deleteProduct(productId);
+      setSuccess(true);
+    } catch(error) {
+      setFailure(true);
+    }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDeleteId(Number(event.target.value));
+  };
+
   return (
     <Box
       sx={{
@@ -29,17 +47,26 @@ const DeleteProduct = () => {
         gap: "2rem",
         height: "100vh",
       }}
+      component={"form"}
+      onSubmit={(event) => handleDelete(event, deleteId)}
     >
       <Typography variant="h3">Delete product</Typography>
-      <TextField label="Product id"></TextField>
-      <Button variant="contained">Delete</Button>
-      <HomeButton></HomeButton>
+      <TextField
+        label="Product id"
+        type="number"
+        inputProps={{ min: 0 }}
+        onChange={handleChange}
+      ></TextField>
+      <Button variant="contained" type="submit">
+        Delete
+      </Button>
+      <HomeButton />
       <Validation
         success={success}
-        successMessage="Deleted product succesfully"
+        successMessage="Deletion succeeded"
         failure={failure}
         failureMessage="Deletion unsuccessful"
-      ></Validation>
+      />
     </Box>
   );
 };
