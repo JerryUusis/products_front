@@ -5,7 +5,6 @@ import {
   TextField,
   Button,
   Autocomplete,
-  Alert,
 } from "@mui/material";
 import {
   getAll,
@@ -15,6 +14,7 @@ import {
 } from "../services/productsService";
 import { ProductType } from "../types/product";
 import Validation from "../components/Validation";
+import HomeButton from "../components/HomeButton";
 
 const UpdateProduct = () => {
   const [success, setSuccess] = useState(false);
@@ -109,7 +109,7 @@ const UpdateProduct = () => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        gap: "2rem",
+        gap: "1rem",
         height: "100vh",
       }}
     >
@@ -126,7 +126,7 @@ const UpdateProduct = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          gap: "2rem",
+          gap: "1rem",
           my: "1rem",
         }}
         component={"form"}
@@ -168,6 +168,7 @@ const UpdateProduct = () => {
       >
         update values
       </Button>
+      <HomeButton></HomeButton>
     </Box>
   );
 };
