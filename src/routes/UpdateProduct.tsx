@@ -5,6 +5,7 @@ import {
   TextField,
   Button,
   Autocomplete,
+  Alert,
 } from "@mui/material";
 import {
   getAll,
@@ -13,8 +14,11 @@ import {
   updateProduct,
 } from "../services/productsService";
 import { ProductType } from "../types/product";
+import Validation from "../components/Validation";
 
 const UpdateProduct = () => {
+  const [success, setSuccess] = useState(false);
+  const [failure, setFailure] = useState(false);
   const [options, setOptions] = useState<string[]>([]);
   const [searchId, setSearchId] = useState<number>(0);
   const [keys, setKeys] = useState<string[]>([]);
@@ -50,6 +54,26 @@ const UpdateProduct = () => {
         console.log(error);
       });
   }, []);
+
+  useEffect(() => {
+    if (success || failure) {
+      const timer = setTimeout(() => {
+        setSuccess(false);
+        setFailure(false);
+      }, 4000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [success, failure]);
+
+  const handleUpdate = (updatedProduct: ProductType, productId: number) => {
+    try {
+      updateProduct(updatedProduct, productId);
+      setSuccess(true);
+    } catch {
+      setFailure(true);
+    }
+  };
 
   const handleChange = (
     event: React.SyntheticEvent<Element, Event>,
@@ -89,6 +113,12 @@ const UpdateProduct = () => {
         height: "100vh",
       }}
     >
+      <Validation
+        success={success}
+        successMessage="Update successful"
+        failure={failure}
+        failureMessage="Update failed"
+      />
       <Typography variant="h4">Update product</Typography>
       <Box
         sx={{
@@ -133,7 +163,7 @@ const UpdateProduct = () => {
       <Button
         variant="contained"
         onClick={() =>
-          updateProduct(selectedProduct[0], selectedProduct[0].productId)
+          handleUpdate(selectedProduct[0], selectedProduct[0].productId)
         }
       >
         update values
