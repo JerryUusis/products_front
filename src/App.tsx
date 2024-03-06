@@ -3,6 +3,7 @@ import Home from "./routes/Home";
 import GetProduct from "./routes/GetProduct";
 import InsertProduct from "./routes/InsertProduct";
 import UpdateProduct from "./routes/UpdateProduct";
+import DeleteProduct from "./routes/DeleteProduct";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route path="/getproduct" element={<GetProduct />} />
         <Route path="/insertproduct" element={<InsertProduct />} />
         <Route path="/updateproduct" element={<UpdateProduct />} />
+        <Route path="/deleteproduct" element={<DeleteProduct />} />
       </Routes>
     </Router>
   );

@@ -37,7 +37,9 @@ const Home = () => {
         <Link to={"/updateproduct"}>
           <Button variant="contained">Update product</Button>
         </Link>
-        <Button variant="contained">Delete product</Button>
+        <Link to={"deleteproduct"}>
+          <Button variant="contained">Delete product</Button>
+        </Link>
       </Box>
     </Box>
   );
