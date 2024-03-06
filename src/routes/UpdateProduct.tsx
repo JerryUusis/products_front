@@ -6,7 +6,12 @@ import {
   Button,
   Autocomplete,
 } from "@mui/material";
-import { getAll, getOne, getKeys } from "../services/productsService";
+import {
+  getAll,
+  getOne,
+  getKeys,
+  updateProduct,
+} from "../services/productsService";
 import { ProductType } from "../types/product";
 
 const UpdateProduct = () => {
@@ -66,6 +71,13 @@ const UpdateProduct = () => {
     }
   };
 
+  const handleFieldChange = (field: keyof ProductType, value: string) => {
+    setSelectedProduct((prevSelectedProduct) => {
+      const updatedProduct = { ...prevSelectedProduct[0], [field]: value };
+      return [updatedProduct];
+    });
+  };
+
   return (
     <Box
       sx={{
@@ -112,9 +124,20 @@ const UpdateProduct = () => {
                 ? selectedProduct[0][key as keyof ProductType]
                 : ""
             }
+            onChange={(event) =>
+              handleFieldChange(key as keyof ProductType, event.target.value)
+            }
           />
         );
       })}
+      <Button
+        variant="contained"
+        onClick={() =>
+          updateProduct(selectedProduct[0], selectedProduct[0].productId)
+        }
+      >
+        update values
+      </Button>
     </Box>
   );
 };
