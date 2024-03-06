@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getKeys } from "../services/productsService";
-import { Box, TextField, Typography, Button, Alert, Fade } from "@mui/material";
+import { Box, TextField, Typography, Button } from "@mui/material";
 import { insertProduct } from "../services/productsService";
 import Validation from "../components/Validation";
 import HomeButton from "../components/HomeButton";
@@ -83,7 +83,12 @@ const InsertProduct = () => {
       onSubmit={handleSubmit}
     >
       <Typography variant="h4">Insert new product</Typography>
-      <Validation success={success} successMessage="New product added!" failure={failure} failureMessage="Product ID already exists"/>
+      <Validation
+        success={success}
+        successMessage="New product added!"
+        failure={failure}
+        failureMessage="Product ID already exists"
+      />
       {keys?.map((key) => {
         return (
           <TextField
