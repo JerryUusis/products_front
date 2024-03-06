@@ -6,12 +6,13 @@ import {
   Button,
   Autocomplete,
 } from "@mui/material";
-import { getAll, getOne } from "../services/productsService";
+import { getAll, getOne, getKeys } from "../services/productsService";
 import { ProductType } from "../types/product";
 
 const UpdateProduct = () => {
   const [options, setOptions] = useState<string[]>([]);
   const [searchId, setSearchId] = useState<number>(0);
+  const [keys, setKeys] = useState<string[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<ProductType[]>([
     {
       productId: 0,
@@ -35,11 +36,21 @@ const UpdateProduct = () => {
     }
   }, []);
 
+  useEffect(() => {
+    getKeys()
+      .then((fetchKeys) => {
+        setKeys(fetchKeys);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const handleChange = (
     event: React.SyntheticEvent<Element, Event>,
-    value: number
+    value: string | null
   ) => {
-    setSearchId(Number(value));
+    setSearchId(Number(value ? value : null));
   };
 
   const getValuesById = async (
@@ -48,11 +59,10 @@ const UpdateProduct = () => {
   ) => {
     event.preventDefault();
     try {
-    const values = await getOne(productId);
-    setSelectedProduct(values);
-    }
-    catch(error) {
-      console.log(error)
+      const values = await getOne(productId);
+      setSelectedProduct(values);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -69,43 +79,42 @@ const UpdateProduct = () => {
     >
       <Typography variant="h4">Update product</Typography>
       <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        gap: "2rem",
-        my:"1rem"
-      }}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "2rem",
+          my: "1rem",
+        }}
         component={"form"}
         onSubmit={(event) => getValuesById(event, searchId)}
       >
         <Autocomplete
           onChange={handleChange}
           options={options}
-          renderInput={(params) => <TextField {...params} label="Product Id" required/>}
+          renderInput={(params) => (
+            <TextField {...params} label="Product Id" required />
+          )}
         />
         <Button variant="contained" type="submit">
           Select ID
         </Button>
       </Box>
-      <TextField
-        label={"Name"}
-        value={selectedProduct ? selectedProduct[0].name : null}
-      />
-      <TextField
-        label={"Model"}
-        value={selectedProduct ? selectedProduct[0].model : null}
-      />
-      <TextField
-        label={"Type"}
-        value={selectedProduct ? selectedProduct[0].type : null}
-      />
-      <TextField
-        label={"Price"}
-        value={selectedProduct ? selectedProduct[0].price : null}
-      />
-      <Button variant="contained">Update</Button>
+      {keys.slice(1).map((key) => {
+        return (
+          <TextField
+            sx={{ textTransform: "capitalize" }}
+            key={key}
+            label={key}
+            value={
+              selectedProduct
+                ? selectedProduct[0][key as keyof ProductType]
+                : ""
+            }
+          />
+        );
+      })}
     </Box>
   );
 };
