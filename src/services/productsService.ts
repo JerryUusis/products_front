@@ -37,6 +37,9 @@ export const insertProduct = async (newProduct: ProductType) => {
       // returns an empty array if an ID doesn't exist
       throw new Error("Product ID already exists");
     }
+    else if (!newProduct.productId) {
+      throw new Error("Bad product ID")
+    }
     await axios.post(`${BASE_URL}/rest/products`, newProduct);
     console.log("Succesfully posted:", newProduct.name);
   } catch (error) {
