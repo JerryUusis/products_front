@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import HomeButton from "../components/HomeButton";
+import Validation from "../components/Validation";
 import {
   Box,
   Typography,
@@ -20,6 +21,15 @@ const GetProduct = () => {
   const [searchId, setSearchId] = useState<number>(0);
   const [foundProduct, setFoundProduct] = useState<ProductType | null>();
   const [keys, setKeys] = useState<string[]>();
+  const [alertType, setAlertType] = useState<"success" | "error">("success");
+  const [visible, setVisible] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+
+  useEffect(() => {
+    setTimeout(() => {
+      setVisible(false);
+    }, 4000);
+  }, [visible]);
 
   useEffect(() => {
     getKeys()
@@ -32,8 +42,14 @@ const GetProduct = () => {
   }, []);
 
   const handleSearch = async () => {
-    const item = await getOne(searchId);
-    setFoundProduct(item[0]);
+    try {
+      const item = await getOne(searchId);
+      setFoundProduct(item[0]);
+    } catch (error: any) {
+      setAlertType("error");
+      setMessage(error.message);
+      setVisible(true);
+    }
   };
 
   const handleId = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,8 +59,16 @@ const GetProduct = () => {
 
   return (
     <Box
-      sx={{ display: "flex", flexDirection: "column", justifyContent:"center", alignItems: "center", gap:"2rem", height:"100vh"}}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        gap: "2rem",
+        height: "100vh",
+      }}
     >
+      <Validation alertType={alertType} message={message} visible={visible} />
       <Typography variant="h4">Get product by id</Typography>
       <TextField
         label="Product id"
@@ -71,8 +95,8 @@ const GetProduct = () => {
                 })}
               </TableRow>
             </TableHead>
-            {foundProduct ? (
-              <TableBody>
+            <TableBody>
+              {foundProduct ? (
                 <TableRow>
                   <TableCell>{foundProduct.productId}</TableCell>
                   <TableCell>{foundProduct.name}</TableCell>
@@ -82,12 +106,12 @@ const GetProduct = () => {
                   </TableCell>
                   <TableCell>{foundProduct.price}</TableCell>
                 </TableRow>
-              </TableBody>
-            ) : (
-              <TableRow>
-                <TableCell colSpan={keys?.length}>No product found</TableCell>
-              </TableRow>
-            )}
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={keys?.length} sx={{textAlign:"center"}}>No product found</TableCell>
+                </TableRow>
+              )}
+            </TableBody>
           </Table>
         </TableContainer>
       </Box>
