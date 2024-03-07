@@ -69,7 +69,7 @@ const UpdateProduct = () => {
   const handleUpdate = (updatedProduct: ProductType, productId: number) => {
     try {
       if (!productId) {
-        throw new Error("Bad product Id")
+        throw new Error("Bad product Id");
       }
       updateProduct(updatedProduct, productId);
       setSuccess(true);
