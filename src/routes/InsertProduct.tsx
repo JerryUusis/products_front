@@ -10,7 +10,7 @@ const InsertProduct = () => {
   const [keys, setKeys] = useState<string[]>();
   const [alertType, setAlertType] = useState<"success" | "error">("success");
   const [visible, setVisible] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("")
+  const [message, setMessage] = useState<string>("");
   const [formdata, setFormData] = useState<ProductType>({
     productId: 0,
     name: "",
@@ -32,7 +32,7 @@ const InsertProduct = () => {
   useEffect(() => {
     if (visible) {
       const timer = setTimeout(() => {
-        setVisible(false)
+        setVisible(false);
       }, 4000);
 
       return () => clearTimeout(timer);
@@ -42,10 +42,7 @@ const InsertProduct = () => {
   const handleChange =
     (key: keyof ProductType) =>
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      const value =
-        key === "price" || key === "productId"
-          ? parseFloat(event.target.value)
-          : event.target.value;
+      const value = event.target.value;
 
       setFormData((prevData) => ({
         ...prevData,
@@ -64,11 +61,10 @@ const InsertProduct = () => {
         price: formdata.price,
       });
       setVisible(true);
-      setMessage("Updated succesfully")
+      setMessage("Product added");
       setAlertType("success");
-      setMessage
     } catch (error: any) {
-      setMessage(error.message)
+      setMessage(error.message);
       setVisible(true);
       setAlertType("error");
     }
@@ -88,11 +84,7 @@ const InsertProduct = () => {
       onSubmit={handleSubmit}
     >
       <Typography variant="h4">Insert new product</Typography>
-      <Validation
-        alertType={alertType}
-        message={message}
-        visible={visible}
-      />
+      <Validation alertType={alertType} message={message} visible={visible} />
       {keys?.map((key) => {
         return (
           <TextField
@@ -103,7 +95,11 @@ const InsertProduct = () => {
             value={formdata[key as keyof ProductType]}
             onChange={handleChange(key as keyof ProductType)}
             inputProps={
-              key === "price" || key === "productId" ? { min: 0 } : { min: "" }
+              key === "price"
+                ? { step: "0.01", min: 0 }
+                : key === "productId"
+                ? { step: "1", min: 0 }
+                : {}
             }
             required
           />
