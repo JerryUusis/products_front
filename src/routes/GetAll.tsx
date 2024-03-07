@@ -44,42 +44,58 @@ const GetAll = () => {
       });
   }, []);
 
-  return (
-
-    loading ? <Loading /> : 
-
+  return loading ? (
+    <Loading />
+  ) : (
     <Box
-      sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "2rem"}}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "2rem",
+      }}
     >
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              {keys.map((key) => {
-                return (
-                  <TableCell key={key} sx={{ textTransform: "capitalize" }}>
-                    {key}
-                  </TableCell>
-                );
-              })}
+              {keys?.length !== undefined ? (
+                keys?.map((key) => {
+                  return (
+                    <TableCell key={key} sx={{ textTransform: "capitalize" }}>
+                      {key}
+                    </TableCell>
+                  );
+                })
+              ) : (
+                <TableCell sx={{ textAlign: "center" }}>
+                  No Data found
+                </TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item) => {
-              return (
-                <TableRow key={item.productId}>
-                  <TableCell>{item.productId}</TableCell>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.model}</TableCell>
-                  <TableCell>{item.type}</TableCell>
-                  <TableCell>{item.price}</TableCell>
-                </TableRow>
-              );
-            })}
+            {keys?.length !== 0 ? (
+              data?.map((item) => {
+                return (
+                  <TableRow key={item.productId}>
+                    <TableCell>{item.productId}</TableCell>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{item.model}</TableCell>
+                    <TableCell>{item.type}</TableCell>
+                    <TableCell>{item.price}</TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <TableRow>
+                <TableCell>No product found</TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
-       <HomeButton />
+      <HomeButton />
     </Box>
   );
 };
