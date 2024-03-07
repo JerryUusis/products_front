@@ -1,25 +1,24 @@
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect } from "react";
 import { deleteProduct } from "../services/productsService";
 import { Box, Typography, TextField, Button } from "@mui/material";
 import HomeButton from "../components/HomeButton";
 import Validation from "../components/Validation";
 
 const DeleteProduct = () => {
-  const [success, setSuccess] = useState<boolean>(false);
-  const [failure, setFailure] = useState<boolean>(false);
-  const [failureMessage, setFailureMessage] = useState<string>("");
+  const [alertType, setAlertType] = useState<"success" | "error">("success");
+  const [visible, setVisible] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
   const [deleteId, setDeleteId] = useState<number>(0);
 
   useEffect(() => {
-    if (success || failure) {
+    if (visible) {
       const timer = setTimeout(() => {
-        setSuccess(false);
-        setFailure(false);
+        setVisible(false);
       }, 4000);
 
       return () => clearTimeout(timer);
     }
-  }, [success, failure]);
+  }, [alertType]);
 
   const handleDelete = async (
     event: React.FormEvent<HTMLFormElement>,
@@ -28,11 +27,13 @@ const DeleteProduct = () => {
     event.preventDefault();
     try {
       await deleteProduct(productId);
-      setSuccess(true);
-    } catch (error: Error) {
-      console.log("error in line 33", error);
-      setFailure(true);
-      setFailureMessage(error.message);
+      setVisible(true);
+      setAlertType("success");
+      setMessage(`Succesfully deleted product with id ${productId}`);
+    } catch (error: any) {
+      setVisible(true);
+      setAlertType("error");
+      setMessage(error.message);
     }
   };
 
@@ -60,17 +61,12 @@ const DeleteProduct = () => {
         inputProps={{ min: 0 }}
         onChange={handleChange}
         required
-      ></TextField>
+      />
       <Button variant="contained" type="submit">
         Delete
       </Button>
       <HomeButton />
-      <Validation
-        success={success}
-        successMessage="Deletion succeeded"
-        failure={failure}
-        failureMessage={failureMessage?.toString()}
-      />
+      <Validation alertType={alertType} visible={visible} message={message} />
     </Box>
   );
 };
