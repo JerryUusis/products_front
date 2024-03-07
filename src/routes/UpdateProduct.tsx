@@ -68,6 +68,9 @@ const UpdateProduct = () => {
 
   const handleUpdate = (updatedProduct: ProductType, productId: number) => {
     try {
+      if (!productId) {
+        throw new Error("Bad product Id")
+      }
       updateProduct(updatedProduct, productId);
       setSuccess(true);
     } catch {
@@ -143,7 +146,7 @@ const UpdateProduct = () => {
           Select ID
         </Button>
       </Box>
-      {keys.slice(1).map((key) => {
+      {keys?.slice(1).map((key) => {
         return (
           <TextField
             sx={{ textTransform: "capitalize" }}
