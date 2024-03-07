@@ -18,7 +18,7 @@ const DeleteProduct = () => {
 
       return () => clearTimeout(timer);
     }
-  }, [alertType]);
+  }, [visible]);
 
   const handleDelete = async (
     event: React.FormEvent<HTMLFormElement>,

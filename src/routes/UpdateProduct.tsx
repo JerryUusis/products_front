@@ -64,7 +64,7 @@ const UpdateProduct = () => {
 
       return () => clearTimeout(timer);
     }
-  }, [alertType]);
+  }, [visible]);
 
   const handleUpdate = (updatedProduct: ProductType, productId: number) => {
     try {
