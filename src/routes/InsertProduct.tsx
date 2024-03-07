@@ -8,8 +8,9 @@ import { ProductType } from "../types/product";
 
 const InsertProduct = () => {
   const [keys, setKeys] = useState<string[]>();
-  const [success, setSuccess] = useState(false);
-  const [failure, setFailure] = useState(false);
+  const [alertType, setAlertType] = useState<"success" | "error">("success");
+  const [visible, setVisible] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("")
   const [formdata, setFormData] = useState<ProductType>({
     productId: 0,
     name: "",
@@ -29,15 +30,14 @@ const InsertProduct = () => {
   }, []);
 
   useEffect(() => {
-    if (success || failure) {
+    if (visible) {
       const timer = setTimeout(() => {
-        setSuccess(false);
-        setFailure(false);
+        setVisible(false)
       }, 4000);
 
       return () => clearTimeout(timer);
     }
-  }, [success, failure]);
+  }, [alertType]);
 
   const handleChange =
     (key: keyof ProductType) =>
@@ -63,9 +63,14 @@ const InsertProduct = () => {
         type: formdata.type,
         price: formdata.price,
       });
-      setSuccess(true);
-    } catch (error) {
-      setFailure(true);
+      setVisible(true);
+      setMessage("Updated succesfully")
+      setAlertType("success");
+      setMessage
+    } catch (error: any) {
+      setMessage(error.message)
+      setVisible(true);
+      setAlertType("error");
     }
   };
 
@@ -84,10 +89,9 @@ const InsertProduct = () => {
     >
       <Typography variant="h4">Insert new product</Typography>
       <Validation
-        success={success}
-        successMessage="New product added!"
-        failure={failure}
-        failureMessage="Product ID already exists"
+        alertType={alertType}
+        message={message}
+        visible={visible}
       />
       {keys?.map((key) => {
         return (
