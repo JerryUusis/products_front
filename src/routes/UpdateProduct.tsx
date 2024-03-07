@@ -17,8 +17,9 @@ import Validation from "../components/Validation";
 import HomeButton from "../components/HomeButton";
 
 const UpdateProduct = () => {
-  const [success, setSuccess] = useState(false);
-  const [failure, setFailure] = useState(false);
+  const [alertType, setAlertType] = useState<"success" | "error">("success");
+  const [visible, setVisible] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
   const [options, setOptions] = useState<string[]>([]);
   const [searchId, setSearchId] = useState<number>(0);
   const [keys, setKeys] = useState<string[]>([]);
@@ -56,15 +57,14 @@ const UpdateProduct = () => {
   }, []);
 
   useEffect(() => {
-    if (success || failure) {
+    if (visible) {
       const timer = setTimeout(() => {
-        setSuccess(false);
-        setFailure(false);
+        setVisible(false);
       }, 4000);
 
       return () => clearTimeout(timer);
     }
-  }, [success, failure]);
+  }, [alertType]);
 
   const handleUpdate = (updatedProduct: ProductType, productId: number) => {
     try {
@@ -72,9 +72,13 @@ const UpdateProduct = () => {
         throw new Error("Bad product Id");
       }
       updateProduct(updatedProduct, productId);
-      setSuccess(true);
-    } catch {
-      setFailure(true);
+      setVisible(true);
+      setMessage("Updated succesfully");
+      setAlertType("success");
+    } catch (error: any) {
+      setMessage(error.message);
+      setVisible(true);
+      setAlertType("error");
     }
   };
 
@@ -116,12 +120,7 @@ const UpdateProduct = () => {
         height: "100vh",
       }}
     >
-      <Validation
-        success={success}
-        successMessage="Update successful"
-        failure={failure}
-        failureMessage="Update failed"
-      />
+      <Validation message={message} visible={visible} alertType={alertType} />
       <Typography variant="h4">Update product</Typography>
       <Box
         sx={{
@@ -171,7 +170,7 @@ const UpdateProduct = () => {
       >
         update values
       </Button>
-      <HomeButton></HomeButton>
+      <HomeButton />
     </Box>
   );
 };
