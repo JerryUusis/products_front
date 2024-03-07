@@ -37,7 +37,7 @@ const InsertProduct = () => {
 
       return () => clearTimeout(timer);
     }
-  }, [alertType]);
+  }, [visible]);
 
   const handleChange =
     (key: keyof ProductType) =>
