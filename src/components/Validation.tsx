@@ -20,7 +20,7 @@ const Validation = ({
           <Alert
             severity="success"
             variant="filled"
-            sx={{ position: "absolute" }}
+            sx={{ position: "absolute", zIndex: 10, width:"10rem"}}
           >
             {successMessage}
           </Alert>
@@ -31,7 +31,7 @@ const Validation = ({
           <Alert
             severity="error"
             variant="filled"
-            sx={{ position: "absolute" }}
+            sx={{ position: "absolute", zIndex: 10, width:"10rem"}}
           >
             {failureMessage}
           </Alert>
