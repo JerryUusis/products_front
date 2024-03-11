@@ -75,6 +75,7 @@ const UpdateProduct = () => {
       setVisible(true);
       setMessage("Updated succesfully");
       setAlertType("success");
+      resetFormData();
     } catch (error: any) {
       setMessage(error.message);
       setVisible(true);
@@ -82,11 +83,27 @@ const UpdateProduct = () => {
     }
   };
 
+  const resetFormData = () => {
+    setSelectedProduct([
+      {
+        productId: 0,
+        name: "",
+        model: "",
+        type: "",
+        price: 0,
+      },
+    ]);
+  };
+
   const handleChange = (
     event: React.SyntheticEvent<Element, Event>,
     value: string | null
   ) => {
+    if (value === null) {
+      setSearchId(0);
+    }
     setSearchId(Number(value ? value : null));
+    resetFormData();
   };
 
   const getValuesById = async (
