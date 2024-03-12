@@ -43,6 +43,7 @@ export const insertProduct = async (newProduct: ProductType) => {
     await axios.post(`${BASE_URL}/rest/products`, newProduct);
     console.log("Succesfully posted:", newProduct.name);
   } catch (error) {
+    console.log(error)
     throw error;
   }
 };
@@ -54,6 +55,7 @@ export const updateProduct = async (
   try {
     await axios.put(`${BASE_URL}/rest/products/${productId}`, updatedProduct);
   } catch (error) {
+    console.log(error)
     throw error;
   }
 };
@@ -67,6 +69,7 @@ export const deleteProduct = async (productId: number) => {
       await axios.delete(`${BASE_URL}/rest/products/${productId}`);
     }
   } catch (error) {
+    console.log(error)
     throw error;
   }
 };
