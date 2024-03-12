@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { getKeys } from "../services/productsService";
+import { getKeys, insertProduct } from "../services/productsService";
 import { Box, TextField, Typography, Button } from "@mui/material";
-import { insertProduct } from "../services/productsService";
 import Validation from "../components/Validation";
 import HomeButton from "../components/HomeButton";
 import { ProductType } from "../types/product";
