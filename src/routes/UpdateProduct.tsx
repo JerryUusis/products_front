@@ -105,7 +105,7 @@ const UpdateProduct = () => {
     if (value === null) {
       setSearchId(0);
     }
-    setSearchId(Number(value ? value : null));
+    setSearchId(Number(value));
     resetFormData();
   };
 
