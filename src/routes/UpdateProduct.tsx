@@ -35,18 +35,18 @@ const UpdateProduct = () => {
 
   // Get product ID's after loading the page
   useEffect(() => {
-    try {
-      const getProductIds = async () => {
+    const getProductIds = async () => {
+      try {
         const response = await getAll();
         const productIds = response.map((product: ProductType) =>
           product.productId.toString()
         );
         setOptions(productIds);
-      };
-      getProductIds();
-    } catch (error) {
-      console.log(error);
-    }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProductIds();
   }, []);
 
   useEffect(() => {

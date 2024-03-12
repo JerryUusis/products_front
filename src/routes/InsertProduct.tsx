@@ -19,16 +19,15 @@ const InsertProduct = () => {
   });
 
   useEffect(() => {
-    try {
-      const fetchData = async () => {
+    const fetchData = async () => {
+      try {
         const keyData = await getKeys();
         setKeys(keyData);
-      };
-
+      } catch (error) {
+        console.log(error);
+      }
       fetchData();
-    } catch (error) {
-      console.log(error);
-    }
+    };
   }, []);
 
   useEffect(() => {
