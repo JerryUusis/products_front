@@ -3,13 +3,9 @@ import { Button } from "@mui/material";
 
 const HomeButton = () => {
   return (
-    <>
-      <Link to={"/"}>
-        <Button variant="contained" >
-          Home
-        </Button>
-      </Link>
-    </>
+    <Link to={"/"}>
+      <Button variant="contained">Home</Button>
+    </Link>
   );
 };
 
