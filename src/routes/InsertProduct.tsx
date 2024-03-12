@@ -72,6 +72,20 @@ const InsertProduct = () => {
     }
   };
 
+  const getInputType = (key: string): string => {
+    return key === "productId" || key === "price" ? "number" : "text";
+  };
+
+  const getInputProps = (key: string) => {
+    if (key === "price") {
+      return { step: "0.01", min: 0 };
+    } else if (key === "productId") {
+      return { step: "1", min: 0 };
+    } else {
+      return;
+    }
+  };
+
   return (
     <Box
       component="form"
@@ -92,17 +106,11 @@ const InsertProduct = () => {
           <TextField
             key={key}
             label={key}
-            type={key === "price" || key === "productId" ? "number" : "text"}
+            type={getInputType(key)}
             sx={{ textTransform: "capitalize" }}
             value={formdata[key as keyof ProductType]}
             onChange={handleChange(key as keyof ProductType)}
-            inputProps={
-              key === "price"
-                ? { step: "0.01", min: 0 }
-                : key === "productId"
-                ? { step: "1", min: 0 }
-                : {}
-            }
+            inputProps={getInputProps(key)}
             required
           />
         );
