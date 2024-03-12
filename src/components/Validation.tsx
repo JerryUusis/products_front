@@ -1,14 +1,13 @@
 import { Alert, Fade } from "@mui/material";
 
-interface validationProps {
+interface ValidationProps {
   visible: boolean;
   message: string;
   alertType: "error" | "success";
 }
 
-const Validation = ({ alertType, message, visible }: validationProps) => {
+const Validation = ({ alertType, message, visible }: ValidationProps) => {
   return (
-    <>
       <Fade in={visible} timeout={250}>
         <Alert
           severity={alertType}
@@ -18,7 +17,6 @@ const Validation = ({ alertType, message, visible }: validationProps) => {
           {message}
         </Alert>
       </Fade>
-    </>
   );
 };
 
