@@ -20,9 +20,12 @@ const InsertProduct = () => {
 
   useEffect(() => {
     try {
-      getKeys().then((keydata) => {
-        setKeys(keydata);
-      });
+      const fetchData = async () => {
+        const keyData = await getKeys();
+        setKeys(keyData);
+      };
+
+      fetchData();
     } catch (error) {
       console.log(error);
     }
